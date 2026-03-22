@@ -9,13 +9,25 @@ import pagesRoutes from './routes/pages'
 import usersRoutes from './routes/users'
 import adminRoutes from './routes/admin'
 
+import path from 'path'
+
 const app = express()
 const PORT = process.env.PORT || 4000
+
+// Serve React frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'))
+  })
+}
 
 // Middleware
 app.use(
   cors({
-    origin: ['http://localhost:5070', 'http://127.0.0.1:5070'],
+    origin: process.env.NODE_ENV === 'production'
+      ? process.env.APP_URL || true
+      : ['http://localhost:5070', 'http://127.0.0.1:5070'],
     credentials: true,
   })
 )
@@ -34,8 +46,9 @@ app.use('/api', pagesRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/admin', adminRoutes)
 
-app.listen(PORT, () => {
-  console.log(`BaseDocs server running on http://localhost:${PORT}`)
+// This should always be last
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`BaseDocs server running on port ${PORT}`)
 })
 
 export default app
