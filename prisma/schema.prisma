@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String     @id @default(cuid())
+  email      String     @unique
+  name       String
+  password   String
+  role       Role       @default(WRITER)
+  createdAt  DateTime   @default(now())
+  pages      Page[]
+  activities Activity[]
+}
+
+enum Role {
+  ADMIN
+  WRITER
+}
+
+model Space {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  emoji       String   @default("📄")
+  color       String   @default("#2d6a4f")
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  pages       Page[]
+}
+
+model Page {
+  id         String     @id @default(cuid())
+  title      String
+  slug       String
+  content    Json       @default("{}")
+  spaceId    String
+  parentId   String?
+  authorId   String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  space      Space      @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  author     User       @relation(fields: [authorId], references: [id])
+  parent     Page?      @relation("PageChildren", fields: [parentId], references: [id])
+  children   Page[]     @relation("PageChildren")
+  activities Activity[]
+
+  @@unique([spaceId, slug])
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  action    String
+  userId    String
+  pageId    String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  page      Page?    @relation(fields: [pageId], references: [id])
+}
