@@ -40,9 +40,9 @@ app.use('/api/admin', adminRoutes)
 
 // Serve React frontend in production (must be after API routes)
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')))
+  app.use(express.static(path.join(__dirname, '../../dist')))
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'))
+    res.sendFile(path.join(__dirname, '../../dist/index.html'))
   })
 }
 
