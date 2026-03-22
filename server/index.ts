@@ -14,14 +14,6 @@ import path from 'path'
 const app = express()
 const PORT = process.env.PORT || 4000
 
-// Serve React frontend in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')))
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'))
-  })
-}
-
 // Middleware
 app.use(
   cors({
@@ -45,6 +37,14 @@ app.use('/api/spaces', spacesRoutes)
 app.use('/api', pagesRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/admin', adminRoutes)
+
+// Serve React frontend in production (must be after API routes)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'))
+  })
+}
 
 // This should always be last
 app.listen(PORT, '0.0.0.0', () => {
