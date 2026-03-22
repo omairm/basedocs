@@ -8,7 +8,7 @@
     "server": "cd server && npx ts-node-esm index.ts",
     "dev:full": "concurrently \"pnpm dev\" \"pnpm server\"",
     "build": "vite build && cd server && pnpm install && pnpm build",
-    "start": "cd server && node_modules/.bin/prisma generate && node_modules/.bin/prisma migrate deploy && node dist/index.js",
+    "start": "cd server && node_modules/.bin/prisma migrate deploy; node dist/index.js",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "db:migrate": "prisma migrate dev",
