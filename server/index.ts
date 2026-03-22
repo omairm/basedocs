@@ -12,7 +12,7 @@ import adminRoutes from './routes/admin'
 import path from 'path'
 
 const app = express()
-const PORT = process.env.PORT || 4000
+const PORT = Number(process.env.PORT) || 4000
 
 // Middleware
 app.use(
