@@ -39,16 +39,26 @@ app.use('/api/users', usersRoutes)
 app.use('/api/admin', adminRoutes)
 
 // Serve React frontend in production (must be after API routes)
+const frontendPath = path.join(__dirname, '../../dist')
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../dist')))
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../dist/index.html'))
-  })
+  const fs = require('fs')
+  if (fs.existsSync(path.join(frontendPath, 'index.html'))) {
+    console.log(`Serving static files from ${frontendPath}`)
+    app.use(express.static(frontendPath))
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(frontendPath, 'index.html'))
+    })
+  } else {
+    console.error(`WARNING: Frontend build not found at ${frontendPath}`)
+    app.get('*', (req, res) => {
+      res.status(503).json({ error: 'Frontend not built. Check deployment logs.' })
+    })
+  }
 }
 
 // This should always be last
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`BaseDocs server running on port ${PORT}`)
+  console.log(`BaseDocs server running on port ${PORT} (NODE_ENV=${process.env.NODE_ENV})`)
 })
 
 export default app

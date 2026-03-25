@@ -1,2 +1,5 @@
+[phases.setup]
+nixPkgs = ["nodejs_18", "npm"]
+
 [phases.install]
-cmds = ["echo 'dependencies managed by build command'"]
+cmds = ["echo 'install handled by buildCommand'"]
