@@ -42,6 +42,9 @@ app.use('/api/admin', adminRoutes)
 const frontendPath = path.join(__dirname, '../../dist')
 if (process.env.NODE_ENV === 'production') {
   const fs = require('fs')
+  console.log(`[startup] __dirname=${__dirname}`)
+  console.log(`[startup] frontendPath=${frontendPath}`)
+  console.log(`[startup] cwd=${process.cwd()}`)
   if (fs.existsSync(path.join(frontendPath, 'index.html'))) {
     console.log(`Serving static files from ${frontendPath}`)
     app.use(express.static(frontendPath))
@@ -49,7 +52,10 @@ if (process.env.NODE_ENV === 'production') {
       res.sendFile(path.join(frontendPath, 'index.html'))
     })
   } else {
+    const parentDir = path.join(frontendPath, '..')
+    const listed = fs.existsSync(parentDir) ? fs.readdirSync(parentDir).join(', ') : '(parent dir missing)'
     console.error(`WARNING: Frontend build not found at ${frontendPath}`)
+    console.error(`[debug] Contents of ${parentDir}: ${listed}`)
     app.get('*', (req, res) => {
       res.status(503).json({ error: 'Frontend not built. Check deployment logs.' })
     })
