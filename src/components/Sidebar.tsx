@@ -30,11 +30,14 @@ export function Sidebar({ user, spaces, pages, currentSpace, onLogout, onNewPage
 
   return (
     <>
-      <button className="hamburger-btn" onClick={() => setMobileOpen(true)} aria-label="Open menu">
-        <span />
-        <span />
-        <span />
-      </button>
+      <div className={`mobile-header${mobileOpen ? ' mobile-header--hidden' : ''}`}>
+        <Link to="/spaces" className="mobile-wordmark" style={{ textDecoration: 'none' }}>BaseDocs</Link>
+        <button className="hamburger-btn" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
 
       {mobileOpen && <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />}
 

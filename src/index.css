@@ -1177,6 +1177,10 @@ input, textarea, select {
    Responsive / Mobile
    ============================================ */
 
+.mobile-header {
+  display: none;
+}
+
 .hamburger-btn {
   display: none;
 }
@@ -1194,28 +1198,50 @@ input, textarea, select {
 }
 
 @media (max-width: 768px) {
-  /* Hamburger trigger button — fixed top-left */
+  /* Mobile header bar — fixed strip at top */
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    padding: 0 14px;
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border);
+    z-index: 300;
+  }
+
+  .mobile-header--hidden {
+    display: none;
+  }
+
+  .mobile-wordmark {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+  }
+
+  /* Hamburger trigger button */
   .hamburger-btn {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    position: fixed;
-    top: 14px;
-    left: 14px;
-    z-index: 300;
-    background: var(--sidebar-bg);
+    background: none;
     border: none;
-    padding: 10px 11px;
-    border-radius: 10px;
+    padding: 8px 4px;
     cursor: pointer;
-    box-shadow: var(--shadow-md);
   }
 
   .hamburger-btn span {
     display: block;
     width: 20px;
     height: 2px;
-    background: var(--sidebar-text);
+    background: var(--ink);
     border-radius: 2px;
   }
 
@@ -1272,9 +1298,9 @@ input, textarea, select {
     color: var(--sidebar-text);
   }
 
-  /* Push content down so hamburger doesn't overlap */
+  /* Push content down below mobile header */
   .main-content {
-    padding-top: 56px;
+    padding-top: 52px;
   }
 
   /* Hide desktop admin sidebar on mobile */
@@ -1290,7 +1316,7 @@ input, textarea, select {
     background: var(--surface);
     border-bottom: 1.5px solid var(--border);
     overflow-x: auto;
-    padding-top: 64px; /* clear the hamburger button */
+    padding-top: 52px; /* clear the mobile header */
     flex-shrink: 0;
   }
 
