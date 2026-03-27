@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { User, Space, Page } from '../types'
 import { PageTree } from './PageTree'
@@ -12,8 +13,13 @@ interface SidebarProps {
 }
 
 export function Sidebar({ user, spaces, pages, currentSpace, onLogout, onNewPage }: SidebarProps) {
+  const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const { spaceId } = useParams()
+
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [location.pathname])
 
   const initials = user.name
     .split(' ')
@@ -23,11 +29,23 @@ export function Sidebar({ user, spaces, pages, currentSpace, onLogout, onNewPage
     .slice(0, 2)
 
   return (
-    <aside className="sidebar">
+    <>
+      <button className="hamburger-btn" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+        <span />
+        <span />
+        <span />
+      </button>
+
+      {mobileOpen && <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />}
+
+      <aside className={`sidebar${mobileOpen ? ' mobile-open' : ''}`}>
       <div className="sidebar-header">
         <Link to="/spaces" className="sidebar-wordmark" style={{ textDecoration: 'none' }}>
           BaseDocs
         </Link>
+        <button className="sidebar-close-btn" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+          ✕
+        </button>
       </div>
 
       <nav className="sidebar-nav">
@@ -132,6 +150,7 @@ export function Sidebar({ user, spaces, pages, currentSpace, onLogout, onNewPage
           <span>Sign out</span>
         </button>
       </div>
-    </aside>
+      </aside>
+    </>
   )
 }

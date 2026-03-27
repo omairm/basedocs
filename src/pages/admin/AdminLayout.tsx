@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { User, Space } from '../../types'
 import { Sidebar } from '../../components/Sidebar'
 
@@ -23,7 +23,22 @@ export function AdminLayout({ children, user, spaces, onLogout }: AdminLayoutPro
     <div className="app-layout">
       <Sidebar user={user} spaces={spaces} onLogout={onLogout} />
 
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden', flexDirection: 'column' }}>
+        {/* Admin mobile nav (visible on mobile only) */}
+        <nav className="admin-mobile-nav">
+          {adminNav.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`admin-mobile-nav-item ${location.pathname === item.path ? 'active' : ''}`}
+            >
+              <span>{item.icon}</span>
+              <span>{item.label}</span>
+            </Link>
+          ))}
+        </nav>
+
+        <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Admin sidebar */}
         <div className="admin-sidebar">
           <div
@@ -64,6 +79,7 @@ export function AdminLayout({ children, user, spaces, onLogout }: AdminLayoutPro
 
         {/* Admin content */}
         <main className="admin-content">{children}</main>
+        </div>
       </div>
     </div>
   )

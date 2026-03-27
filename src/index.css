@@ -732,6 +732,33 @@ input, textarea, select {
   font-weight: 600;
 }
 
+.admin-mobile-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.12s ease;
+  border: 1.5px solid transparent;
+}
+
+.admin-mobile-nav-item:hover {
+  background: rgba(28, 26, 22, 0.06);
+  color: var(--ink);
+}
+
+.admin-mobile-nav-item.active {
+  background: rgba(28, 26, 22, 0.08);
+  color: var(--ink);
+  font-weight: 600;
+  border-color: var(--border);
+}
+
 /* ============================================
    TipTap Editor
    ============================================ */
@@ -1144,6 +1171,136 @@ input, textarea, select {
 
 .color-swatch.selected {
   border-color: var(--ink);
+}
+
+/* ============================================
+   Responsive / Mobile
+   ============================================ */
+
+.hamburger-btn {
+  display: none;
+}
+
+.sidebar-close-btn {
+  display: none;
+}
+
+.admin-mobile-nav {
+  display: none;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Hamburger trigger button — fixed top-left */
+  .hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 300;
+    background: var(--sidebar-bg);
+    border: none;
+    padding: 10px 11px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+  }
+
+  .hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--sidebar-text);
+    border-radius: 2px;
+  }
+
+  /* Sidebar becomes a slide-in overlay */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 200;
+    box-shadow: none;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Backdrop overlay */
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 199;
+  }
+
+  /* Close button inside sidebar header */
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--sidebar-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.12s;
+    line-height: 1;
+  }
+
+  .sidebar-close-btn:hover {
+    color: var(--sidebar-text);
+  }
+
+  /* Push content down so hamburger doesn't overlap */
+  .main-content {
+    padding-top: 56px;
+  }
+
+  /* Hide desktop admin sidebar on mobile */
+  .admin-sidebar {
+    display: none;
+  }
+
+  /* Mobile admin nav — horizontal strip */
+  .admin-mobile-nav {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+    background: var(--surface);
+    border-bottom: 1.5px solid var(--border);
+    overflow-x: auto;
+    padding-top: 64px; /* clear the hamburger button */
+    flex-shrink: 0;
+  }
+
+  .admin-mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .admin-content {
+    padding-top: 0;
+  }
 }
 
 /* Scrollbar */
